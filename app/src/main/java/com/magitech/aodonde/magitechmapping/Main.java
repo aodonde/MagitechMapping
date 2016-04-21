@@ -26,22 +26,23 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("Agoro", "Main Breakpoint 1 - testing out the RNG");
-        int x = RandomNumber(MinRandomNumber,MaxRandomNumber);
-        int y = RandomNumber(MinRandomNumber,MaxRandomNumber);
-        int z = RandomNumber(MinRandomNumber,MaxRandomNumber);
-        Log.d("Agoro", "1st RN: " + Integer.toString(x));
-        Log.d("Agoro", "2nd RN: " + Integer.toString(y));
-        Log.d("Agoro", "3rd RN: " + Integer.toString(z));
+        Log.d("Agoro-D", "Main Breakpoint 1 - Executing the createArray method");
+        int [][] DataArray = createArray();
 
-        Log.d("Agoro", "Main Breakpoint 2 - testing out the graphview");
+        Log.i("Agoro-I", "Entering the Array Data debug loop");
+            for(int i=0; i < DataArray.length; i++){
+                Log.d("Agoro", "Array Y Data: " + Integer.toString(DataArray[i][1]));
+                Log.d("Agoro", "Array X Data: " + Integer.toString(DataArray[i][0]));
+            }
+
+        Log.d("Agoro-D", "Main Breakpoint 2 - testing out the graphview");
 
         GraphView RealTime1 = (GraphView) findViewById(R.id.realtime1);
         RealTime1Series = new PointsGraphSeries<>();
         RealTime1.addSeries(RealTime1Series);
 
 
-        Log.d("Agoro", "End of Main");
+        Log.d("Agoro-D", "End of Main");
     }
 
 
@@ -56,15 +57,16 @@ public class Main extends AppCompatActivity {
     }
 
     private int[][] createArray(){
+        Log.i("Agoro-I", "createArray() Breakpoint 1 - Entering the for loop");
         int [][] testArray = new int[10][2];
+        int row = 0;
             for(int ydata = 0; ydata < 10; ydata++) {
-                int xdata = 0;
-                int row = 0;
+                int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
                 testArray[row][0] = xdata;
                 testArray[row][1] = ydata;
                 row++;
-                xdata++;
             }
+        Log.i("Agoro-I", "createArray() Breakpoint 2 - Exiting the For loop");
         return testArray;
     }
 
