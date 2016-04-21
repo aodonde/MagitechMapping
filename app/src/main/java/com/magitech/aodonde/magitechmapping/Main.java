@@ -16,40 +16,56 @@ import java.util.Random;
 
 
 public class Main extends AppCompatActivity {
-    private static int MaxRandomNumber = 10;
-    private static int MinRandomNumber = 1;
+    public static int MaxRandomNumber = 10;
+    public static int MinRandomNumber = 1;
+    public boolean DataLock = true;
 
+    public int [][] DataArray;
     private PointsGraphSeries<DataPoint> RealTime1Series;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("Agoro-D", "Main Breakpoint 1 - Executing the createArray method");
-        int [][] DataArray = createArray();
-
-        Log.i("Agoro-I", "Entering the Array Data debug loop");
-            for(int i=0; i < DataArray.length; i++){
-                Log.d("Agoro", "Array Y Data: " + Integer.toString(DataArray[i][1]));
-                Log.d("Agoro", "Array X Data: " + Integer.toString(DataArray[i][0]));
+        if(DataLock == false ) {
+            Log.d("Agoro-D", "Main Breakpoint 1 - Executing the createArray method");
+            DataArray = createArray();
+        }
+            Log.i("Agoro-I", "Entering the Array Data debug loop");
+            for (int i = 0; i < DataArray.length; i++) {
+                Log.d("Agoro-D", "Array Y Data: " + Integer.toString(DataArray[i][1]));
+                Log.d("Agoro-D", "Array X Data: " + Integer.toString(DataArray[i][0]));
             }
 
-        Log.d("Agoro-D", "Main Breakpoint 2 - testing out the graphview xml object");
+            Log.d("Agoro-D", "Main Breakpoint 2 - Dynamically creating the limits of the graph");
+            int XAxisLimitFirst = sortArray(DataArray);
+            int XAxisLimitSecond = sortArray(DataArray);
+            int XAxisLimitFinal;
 
-        GraphView RealTime1 = (GraphView) findViewById(R.id.realtime1);
-        RealTime1.getViewport().setXAxisBoundsManual(true);
-        RealTime1.getViewport().setMinX(-10);
-        RealTime1.getViewport().setMaxX(10);
-        RealTime1.onDataChanged(false, false);
+            if (XAxisLimitFirst > XAxisLimitSecond){
+                XAxisLimitFinal = XAxisLimitFirst;
+            }
+            else {
+                XAxisLimitFinal = XAxisLimitSecond;
+            }
+            Log.d("Agoro-D", "Value of the X Axis limit: " + Integer.toString(XAxisLimitFinal));
 
-        RealTime1Series = new PointsGraphSeries<DataPoint>(generatePoints(DataArray));
-        RealTime1.addSeries(RealTime1Series);
+            Log.d("Agoro-D", "Main Breakpoint 3 - Creating the GraphView object");
+            GraphView RealTime1 = (GraphView) findViewById(R.id.realtime1);
+
+            RealTime1Series = new PointsGraphSeries<DataPoint>(generatePoints(DataArray));
+
+            RealTime1.getViewport().setXAxisBoundsManual(true);
+            RealTime1.getViewport().setMinX((-XAxisLimitFinal)-10);
+            RealTime1.getViewport().setMaxX(XAxisLimitFinal+10);
+            RealTime1.onDataChanged(false, false);
+
+            RealTime1.addSeries(RealTime1Series);
 
         Log.d("Agoro-D", "End of Main");
     }
-
 
 
     private static int RandomNumber(int min, int max){
