@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.sql.DataTruncation;
@@ -18,10 +20,10 @@ import java.util.Random;
 public class Main extends AppCompatActivity {
     public static int MaxRandomNumber = 10;
     public static int MinRandomNumber = 1;
-    public boolean DataLock = true;
+    public boolean DataLock = false;
 
     public int [][] DataArray;
-    private PointsGraphSeries<DataPoint> RealTime1Series;
+    private LineGraphSeries<DataPoint> RealTime1Series;
 
 
     @Override
@@ -29,42 +31,66 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("Agoro-D", "Data lock flag: "+ Boolean.toString(DataLock));
+
         if(DataLock == false ) {
             Log.d("Agoro-D", "Main Breakpoint 1 - Executing the createArray method");
             DataArray = createArray();
         }
+
+        DataLock = true;
+
+
             Log.i("Agoro-I", "Entering the Array Data debug loop");
-            for (int i = 0; i < DataArray.length; i++) {
+                for (int i = 0; i < DataArray.length; i++) {
                 Log.d("Agoro-D", "Array Y Data: " + Integer.toString(DataArray[i][1]));
                 Log.d("Agoro-D", "Array X Data: " + Integer.toString(DataArray[i][0]));
-            }
+                }
 
             Log.d("Agoro-D", "Main Breakpoint 2 - Dynamically creating the limits of the graph");
             int XAxisLimitFirst = sortArray(DataArray);
             int XAxisLimitSecond = sortArray(DataArray);
             int XAxisLimitFinal;
 
-            if (XAxisLimitFirst > XAxisLimitSecond){
-                XAxisLimitFinal = XAxisLimitFirst;
-            }
-            else {
+                if (XAxisLimitFirst > XAxisLimitSecond){
+                    XAxisLimitFinal = XAxisLimitFirst;
+                }
+                else {
                 XAxisLimitFinal = XAxisLimitSecond;
-            }
+                }
             Log.d("Agoro-D", "Value of the X Axis limit: " + Integer.toString(XAxisLimitFinal));
+
 
             Log.d("Agoro-D", "Main Breakpoint 3 - Creating the GraphView object");
             GraphView RealTime1 = (GraphView) findViewById(R.id.realtime1);
 
-            RealTime1Series = new PointsGraphSeries<DataPoint>(generatePoints(DataArray));
+            RealTime1Series = new LineGraphSeries<DataPoint>(generatePoints(DataArray));
 
             RealTime1.getViewport().setXAxisBoundsManual(true);
             RealTime1.getViewport().setMinX((-XAxisLimitFinal)-10);
             RealTime1.getViewport().setMaxX(XAxisLimitFinal+10);
             RealTime1.onDataChanged(false, false);
 
+            Log.d("Agoro-D", "Main Breakpoint 4 - Formatting the labels");
+            RealTime1.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+                @Override
+                public String formatLabel(double value, boolean isValueX){
+                    if(isValueX){
+                        return super.formatLabel(value, isValueX) + "m";
+                    }
+                    else {
+                        return super.formatLabel(value, isValueX) + "m";
+                    }
+                    }
+                });
+
             RealTime1.addSeries(RealTime1Series);
 
+
+        Log.d("Agoro-D", "Data lock flag: "+ Boolean.toString(DataLock));
+
         Log.d("Agoro-D", "End of Main");
+
     }
 
 
@@ -107,6 +133,7 @@ public class Main extends AppCompatActivity {
         return values;
 
     }
+
 
 
 }
