@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MagitechMapping</string>
+    <string name="title_activity_mapping">Mapping</string>
 </resources>
