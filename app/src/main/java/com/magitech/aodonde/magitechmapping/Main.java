@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class Main extends AppCompatActivity {
     public static int MaxRandomNumber = 10;
-    public static int MinRandomNumber = 1;
+    public static int MinRandomNumber = -10;
     public boolean DataLock = false;
 
     public int [][] DataArray;
@@ -104,10 +104,10 @@ public class Main extends AppCompatActivity {
         Log.i("Agoro-I", "createArray() Breakpoint 1 - Entering the for loop");
         int [][] testArray = new int[10][2];
         int row = 0;
-            for(int ydata = 0; ydata < 10; ydata++) {
+            for(int ydata = 0; ydata < testArray.length; ydata++) {
                 int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
                 testArray[row][0] = xdata;
-                testArray[row][1] = ydata;
+                testArray[row][1] = ydata-3;
                 row++;
             }
         Log.i("Agoro-I", "createArray() Breakpoint 2 - Exiting the For loop");
