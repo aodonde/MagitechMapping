@@ -14,6 +14,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.sql.DataTruncation;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -21,8 +23,11 @@ public class Main extends AppCompatActivity {
     public static int MaxRandomNumber = 10;
     public static int MinRandomNumber = -10;
     public boolean DataLock = false;
+    public int ydatacounter = -3;
 
     public int [][] DataArray;
+    public List DataList;
+
     private LineGraphSeries<DataPoint> RealTime1Series;
 
 
@@ -30,6 +35,11 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DataList = ListCreate();
+
+        Log.d("Agoro-D", "List status "+ Boolean.toString(DataList.isEmpty()) +" "+ Integer.toString(DataList.size()));
+
 
         Log.d("Agoro-D", "Data lock flag: "+ Boolean.toString(DataLock));
 
@@ -132,6 +142,18 @@ public class Main extends AppCompatActivity {
             }
         return values;
 
+    }
+
+
+    public List ListCreate(){
+        List methodList = new ArrayList();
+            for(int i = 0; i < 10; i++){
+                int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
+                methodList.add(xdata);
+                methodList.add(ydatacounter);
+                ydatacounter++;
+            }
+        return methodList;
     }
 
 
