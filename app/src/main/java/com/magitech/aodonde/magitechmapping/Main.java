@@ -25,13 +25,10 @@ import java.util.Random;
 public class Main extends AppCompatActivity {
     public static int MaxRandomNumber = 10;
     public static int MinRandomNumber = -10;
-    public boolean DataLock = false;
     public int ydatacounter = -3;
 
     public ArrayList<Integer> DataList = new ArrayList();
-
     private LineGraphSeries<DataPoint> RealTime1Series;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +94,6 @@ public class Main extends AppCompatActivity {
             });
             RealTime1.addSeries(RealTime1Series);
 
-            Log.d("Agoro-D", "Data lock flag: " + Boolean.toString(DataLock));
-
             Log.d("Agoro-D", "End of Main");
 
 
@@ -149,15 +144,11 @@ public class Main extends AppCompatActivity {
 
         }
 
-
     private static int RandomNumber(int min, int max){
         Random r = new Random();
         int RN = r.nextInt((max - min) + 1 ) + min;
         return RN;
     }
-
-
-
     private int sortArray(int[][]DataSort){
         int max = DataSort[0][0];
         for(int i = 1; i < DataSort.length; i++){
@@ -165,7 +156,6 @@ public class Main extends AppCompatActivity {
         }
         return max;
     }
-
     private DataPoint[] generatePoints( int[][] DataPointArray){
         DataPoint[] values = new DataPoint[DataPointArray.length];
             for(int i = 0; i<DataPointArray.length; i++){
@@ -177,22 +167,18 @@ public class Main extends AppCompatActivity {
         return values;
 
     }
-
-
     public void XDataIntoList(ArrayList<Integer> X){
         for(int i = 0; i < 10; i++){
             int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
             X.add(xdata);
         }
     }
-
     public void PutListInto2DArrayX(ArrayList<Integer> X, int[][] Y){
         for(int i = 0; i < Y.length; i++){
             int x = X.get(i);
             Y[i][1]= x;
         }
     }
-
     public void PutListInto2DArrayY(ArrayList<Integer> X, int[][] Y){
         for(int i = 0; i < Y.length; i++){
             int y = ydatacounter;
@@ -200,6 +186,4 @@ public class Main extends AppCompatActivity {
             ydatacounter++;
         }
     }
-
-
 }
