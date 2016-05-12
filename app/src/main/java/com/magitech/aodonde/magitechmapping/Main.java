@@ -36,18 +36,17 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        for (int p = 0; p < 3; p++) {
+            ydatacounter = -3;
             Log.d("Agoro-D", "Main Breakpoint 1 - Creating the list and filling it with RGN then passing these values into the DataArray");
             XDataIntoList(DataList);
 
-            Log.d("Agoro-D", "List check " + Boolean.toString(DataList.isEmpty()) + " " + Integer.toString(DataList.size()));
+            Log.d("Agoro-D", "List check " + "Is the list empty? :" + Boolean.toString(DataList.isEmpty()) + " What is the list size? :" + Integer.toString(DataList.size()));
 
             Log.i("Agoro-I", "Checking List values");
             for (int i = 0; i < DataList.size(); i++) {
-                Log.d("Agoro-I", "Array X Data: " + Integer.toString(DataList.get(i)));
+                Log.d("Agoro-I", "List Data: " + Integer.toString(DataList.get(i)));
             }
 
-            Log.d("Agoro-D", "Main Breakpoint 1.5 - Creating the DataArray it is now 1D");
             int[][] DataArray = new int[DataList.size()][2];
             PutListInto2DArrayX(DataList, DataArray);
             PutListInto2DArrayY(DataList, DataArray);
@@ -62,22 +61,17 @@ public class Main extends AppCompatActivity {
                 Log.d("Agoro-D", "Array X Data: " + Integer.toString(DataArray[i][1]));
             }
 
-        }
 
-    }
-
-    /*
             Log.d("Agoro-D", "Main Breakpoint 2 - Dynamically creating the limits of the graph");
             int XAxisLimitFirst = sortArray(DataArray);
             int XAxisLimitSecond = sortArray(DataArray);
             int XAxisLimitFinal;
 
-                if (XAxisLimitFirst > XAxisLimitSecond){
-                    XAxisLimitFinal = XAxisLimitFirst;
-                }
-                else {
+            if (XAxisLimitFirst > XAxisLimitSecond) {
+                XAxisLimitFinal = XAxisLimitFirst;
+            } else {
                 XAxisLimitFinal = XAxisLimitSecond;
-                }
+            }
             Log.d("Agoro-D", "Value of the X Axis limit: " + Integer.toString(XAxisLimitFinal));
 
 
@@ -87,52 +81,39 @@ public class Main extends AppCompatActivity {
             RealTime1Series = new LineGraphSeries<DataPoint>(generatePoints(DataArray));
 
             RealTime1.getViewport().setXAxisBoundsManual(true);
-            RealTime1.getViewport().setMinX((-XAxisLimitFinal)-10);
-            RealTime1.getViewport().setMaxX(XAxisLimitFinal+10);
+            RealTime1.getViewport().setMinX((-XAxisLimitFinal) - 10);
+            RealTime1.getViewport().setMaxX(XAxisLimitFinal + 10);
             RealTime1.onDataChanged(false, false);
 
             Log.d("Agoro-D", "Main Breakpoint 4 - Formatting the labels");
-            RealTime1.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+            RealTime1.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
                 @Override
-                public String formatLabel(double value, boolean isValueX){
-                    if(isValueX){
+                public String formatLabel(double value, boolean isValueX) {
+                    if (isValueX) {
+                        return super.formatLabel(value, isValueX) + "m";
+                    } else {
                         return super.formatLabel(value, isValueX) + "m";
                     }
-                    else {
-                        return super.formatLabel(value, isValueX) + "m";
-                    }
-                    }
-                });
+                }
+            });
 
             RealTime1.addSeries(RealTime1Series);
 
 
-        Log.d("Agoro-D", "Data lock flag: "+ Boolean.toString(DataLock));
+            Log.d("Agoro-D", "Data lock flag: " + Boolean.toString(DataLock));
 
-        Log.d("Agoro-D", "End of Main");
+            Log.d("Agoro-D", "End of Main");
 
-    }
+        }
 
-*/
+
     private static int RandomNumber(int min, int max){
         Random r = new Random();
         int RN = r.nextInt((max - min) + 1 ) + min;
         return RN;
     }
 
-    private int[][] createArray(){
-        Log.i("Agoro-I", "createArray() Breakpoint 1 - Entering the for loop");
-        int [][] testArray = new int[10][2];
-        int row = 0;
-            for(int ydata = 0; ydata < testArray.length; ydata++) {
-                int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
-                testArray[row][0] = xdata;
-                testArray[row][1] = ydata-3;
-                row++;
-            }
-        Log.i("Agoro-I", "createArray() Breakpoint 2 - Exiting the For loop");
-        return testArray;
-    }
+
 
     private int sortArray(int[][]DataSort){
         int max = DataSort[0][0];
@@ -152,27 +133,6 @@ public class Main extends AppCompatActivity {
             }
         return values;
 
-    }
-
-
-    public void ListCreate(List X){
-            for(int i = 0; i < 10; i++){
-                int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
-                X.add(xdata);
-                X.add(ydatacounter);
-                ydatacounter++;
-            }
-    }
-
-    public int[][] List2Array(){
-        int [][] beta = new int[DataList.size()][1];
-        for(int i=0; i < DataList.size(); i++){
-                int x = DataList.get(i);
-                int y = DataList.get(i+1);
-                beta [i][0] = y;
-                beta [i][1] = x;
-            }
-        return beta;
     }
 
 
