@@ -3,6 +3,7 @@ package com.magitech.aodonde.magitechmapping;
  * Created by aodonde on 20/04/16.
  */
 
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +26,7 @@ public class Main extends AppCompatActivity {
     public boolean DataLock = false;
     public int ydatacounter = -3;
 
-    public int [][] DataArray;
-    public List DataList;
+    public ArrayList<Integer> DataList = new ArrayList();
 
     private LineGraphSeries<DataPoint> RealTime1Series;
 
@@ -36,27 +36,37 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataList = ListCreate();
+        for (int p = 0; p < 3; p++) {
+            Log.d("Agoro-D", "Main Breakpoint 1 - Creating the list and filling it with RGN then passing these values into the DataArray");
+            XDataIntoList(DataList);
 
-        Log.d("Agoro-D", "List status "+ Boolean.toString(DataList.isEmpty()) +" "+ Integer.toString(DataList.size()));
+            Log.d("Agoro-D", "List check " + Boolean.toString(DataList.isEmpty()) + " " + Integer.toString(DataList.size()));
 
+            Log.i("Agoro-I", "Checking List values");
+            for (int i = 0; i < DataList.size(); i++) {
+                Log.d("Agoro-I", "Array X Data: " + Integer.toString(DataList.get(i)));
+            }
 
-        Log.d("Agoro-D", "Data lock flag: "+ Boolean.toString(DataLock));
+            Log.d("Agoro-D", "Main Breakpoint 1.5 - Creating the DataArray it is now 1D");
+            int[][] DataArray = new int[DataList.size()][2];
+            PutListInto2DArrayX(DataList, DataArray);
+            PutListInto2DArrayY(DataList, DataArray);
 
-        if(DataLock == false ) {
-            Log.d("Agoro-D", "Main Breakpoint 1 - Executing the createArray method");
-            DataArray = createArray();
-        }
-
-        DataLock = true;
-
+            Log.d("Agoro-D", "Array status " + Integer.toString(DataArray.length));
 
             Log.i("Agoro-I", "Entering the Array Data debug loop");
-                for (int i = 0; i < DataArray.length; i++) {
-                Log.d("Agoro-D", "Array Y Data: " + Integer.toString(DataArray[i][1]));
-                Log.d("Agoro-D", "Array X Data: " + Integer.toString(DataArray[i][0]));
-                }
+            for (int i = 0; i < DataArray.length; i++) {
+                Log.d("Agoro-D", "Array Y Data: " + Integer.toString(DataArray[i][0]));
+            }
+            for (int i = 0; i < DataArray.length; i++) {
+                Log.d("Agoro-D", "Array X Data: " + Integer.toString(DataArray[i][1]));
+            }
 
+        }
+
+    }
+
+    /*
             Log.d("Agoro-D", "Main Breakpoint 2 - Dynamically creating the limits of the graph");
             int XAxisLimitFirst = sortArray(DataArray);
             int XAxisLimitSecond = sortArray(DataArray);
@@ -103,7 +113,7 @@ public class Main extends AppCompatActivity {
 
     }
 
-
+*/
     private static int RandomNumber(int min, int max){
         Random r = new Random();
         int RN = r.nextInt((max - min) + 1 ) + min;
@@ -145,17 +155,48 @@ public class Main extends AppCompatActivity {
     }
 
 
-    public List ListCreate(){
-        List methodList = new ArrayList();
+    public void ListCreate(List X){
             for(int i = 0; i < 10; i++){
                 int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
-                methodList.add(xdata);
-                methodList.add(ydatacounter);
+                X.add(xdata);
+                X.add(ydatacounter);
                 ydatacounter++;
             }
-        return methodList;
     }
 
+    public int[][] List2Array(){
+        int [][] beta = new int[DataList.size()][1];
+        for(int i=0; i < DataList.size(); i++){
+                int x = DataList.get(i);
+                int y = DataList.get(i+1);
+                beta [i][0] = y;
+                beta [i][1] = x;
+            }
+        return beta;
+    }
+
+
+    public void XDataIntoList(ArrayList<Integer> X){
+        for(int i = 0; i < 10; i++){
+            int xdata = RandomNumber(MinRandomNumber, MaxRandomNumber);
+            X.add(xdata);
+        }
+    }
+
+    public void PutListInto2DArrayX(ArrayList<Integer> X, int[][] Y){
+        for(int i = 0; i < Y.length; i++){
+            int x = X.get(i);
+            Y[i][1]= x;
+        }
+    }
+
+    public void PutListInto2DArrayY(ArrayList<Integer> X, int[][] Y){
+        for(int i = 0; i < Y.length; i++){
+            int y = ydatacounter;
+            Y[i][0] = y;
+            ydatacounter++;
+        }
+    }
 
 
 }
