@@ -7,6 +7,8 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
@@ -39,7 +41,6 @@ public class Main extends AppCompatActivity {
             ydatacounter = -3;
             Log.d("Agoro-D", "Main Breakpoint 1 - Creating the list and filling it with RGN then passing these values into the DataArray");
             XDataIntoList(DataList);
-
             Log.d("Agoro-D", "List check " + "Is the list empty? :" + Boolean.toString(DataList.isEmpty()) + " What is the list size? :" + Integer.toString(DataList.size()));
 
             Log.i("Agoro-I", "Checking List values");
@@ -61,7 +62,6 @@ public class Main extends AppCompatActivity {
                 Log.d("Agoro-D", "Array X Data: " + Integer.toString(DataArray[i][1]));
             }
 
-
             Log.d("Agoro-D", "Main Breakpoint 2 - Dynamically creating the limits of the graph");
             int XAxisLimitFirst = sortArray(DataArray);
             int XAxisLimitSecond = sortArray(DataArray);
@@ -73,7 +73,6 @@ public class Main extends AppCompatActivity {
                 XAxisLimitFinal = XAxisLimitSecond;
             }
             Log.d("Agoro-D", "Value of the X Axis limit: " + Integer.toString(XAxisLimitFinal));
-
 
             Log.d("Agoro-D", "Main Breakpoint 3 - Creating the GraphView object");
             GraphView RealTime1 = (GraphView) findViewById(R.id.realtime1);
@@ -96,13 +95,57 @@ public class Main extends AppCompatActivity {
                     }
                 }
             });
-
             RealTime1.addSeries(RealTime1Series);
-
 
             Log.d("Agoro-D", "Data lock flag: " + Boolean.toString(DataLock));
 
             Log.d("Agoro-D", "End of Main");
+
+
+            final Button button = (Button) findViewById(R.id.button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ydatacounter = -3;
+                    XDataIntoList(DataList);
+                    int[][] DataArray = new int[DataList.size()][2];
+                    PutListInto2DArrayX(DataList, DataArray);
+                    PutListInto2DArrayY(DataList, DataArray);
+                    int XAxisLimitFirst = sortArray(DataArray);
+                    int XAxisLimitSecond = sortArray(DataArray);
+                    int XAxisLimitFinal;
+                    if (XAxisLimitFirst > XAxisLimitSecond) {
+                        XAxisLimitFinal = XAxisLimitFirst;
+                    } else {
+                        XAxisLimitFinal = XAxisLimitSecond;
+                    }
+                    GraphView RealTime1 = (GraphView) findViewById(R.id.realtime1);
+
+                    RealTime1Series = new LineGraphSeries<DataPoint>(generatePoints(DataArray));
+
+                    RealTime1.getViewport().setXAxisBoundsManual(true);
+                    RealTime1.getViewport().setMinX((-XAxisLimitFinal) - 10);
+                    RealTime1.getViewport().setMaxX(XAxisLimitFinal + 10);
+                    RealTime1.onDataChanged(false, false);
+                    RealTime1.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+                        @Override
+                        public String formatLabel(double value, boolean isValueX) {
+                            if (isValueX) {
+                                return super.formatLabel(value, isValueX) + "m";
+                            } else {
+                                return super.formatLabel(value, isValueX) + "m";
+                            }
+                        }
+                    });
+                    RealTime1.addSeries(RealTime1Series);
+
+                }
+            });
+
+
+
+
+
 
         }
 
