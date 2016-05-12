@@ -14,11 +14,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity
-            android:name=".Mapping"
-            android:label="@string/title_activity_mapping"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ManualMode"/>
+        <activity android:name=".Mapping"/>
     </application>
 
 </manifest>
