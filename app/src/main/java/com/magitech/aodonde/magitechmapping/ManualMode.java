@@ -18,6 +18,10 @@ import java.util.ArrayList;
 public class ManualMode extends Activity {
     public int XSTEP = 0;
     public int YSTEP = 0;
+    public String PREVIOUS_MOVEMENT = "ORIGIN";
+    public String PRESENT_MOVEMENT = "ORIGIN";
+    public boolean Y_AXIS_LOCK = false;
+    public boolean X_AXIS_LOCK = false;
     public ArrayList<Integer> YList = new ArrayList();
     public ArrayList<Integer> XList = new ArrayList();
     private LineGraphSeries<DataPoint> RealTime;
@@ -29,26 +33,76 @@ public class ManualMode extends Activity {
         setContentView(R.layout.activity_manual);
     }
 
-    public void Up(View view){
+    public void Forwards(View view){
+
+        PRESENT_MOVEMENT = "FW";
+
+        Y_AXIS_LOCK = false;
+        X_AXIS_LOCK = false;
+
         YSTEP = YSTEP + 1;
         XSTEP = XSTEP + 0;
+
         Map(XSTEP,YSTEP,XList,YList);
+
+        PREVIOUS_MOVEMENT = PRESENT_MOVEMENT;
+
     }
 
     public void Right(View view){
+    if(PREVIOUS_MOVEMENT.equals("L"))
+    {
+        XSTEP = XSTEP + 0;
+        YSTEP = YSTEP + 1;
+    }
+        else if(PREVIOUS_MOVEMENT.equals("R"))
+    {
+        XSTEP = XSTEP + 0;
+        YSTEP = YSTEP - 1;
+    }
+        else{
         XSTEP = XSTEP + 1;
-        YSTEP = YSTEP + 0;
+        YSTEP = YSTEP - 0;
+    }
+
+        PRESENT_MOVEMENT = "R";
+
         Map(XSTEP,YSTEP,XList,YList);
+
+        PREVIOUS_MOVEMENT = PRESENT_MOVEMENT;
+
     }
     public void Left(View view){
-        XSTEP = XSTEP - 1;
-        YSTEP = YSTEP + 0;
+        if(PREVIOUS_MOVEMENT.equals("R"))
+        {
+            XSTEP = XSTEP + 0;
+            YSTEP = YSTEP + 1;
+        }
+        else if(PREVIOUS_MOVEMENT.equals("L"))
+        {
+            XSTEP = XSTEP + 0;
+            YSTEP = YSTEP - 1;
+        }
+        else{
+            XSTEP = XSTEP - 1;
+            YSTEP = YSTEP - 0;
+        }
+
+        PRESENT_MOVEMENT = "L";
+
         Map(XSTEP,YSTEP,XList,YList);
+
+        PREVIOUS_MOVEMENT = PRESENT_MOVEMENT;
     }
-    public void Down(View view){
+    public void Backwards(View view){
+
+        PRESENT_MOVEMENT = "BK";
+
         XSTEP = XSTEP - 0;
         YSTEP = YSTEP - 1;
         Map(XSTEP,YSTEP,XList,YList);
+
+        PREVIOUS_MOVEMENT = PRESENT_MOVEMENT;
 
     }
     public void PutListInto2DArrayX(ArrayList<Integer> X, int[][] Y) {

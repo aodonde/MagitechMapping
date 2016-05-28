@@ -14,9 +14,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Up"
+        android:text="Forwards"
         android:id="@+id/Up"
-        android:onClick="Up"
+        android:onClick="Forwards"
         android:layout_above="@+id/Down"
         android:layout_centerHorizontal="true" />
 
@@ -37,17 +37,16 @@
         android:text="Right"
         android:id="@+id/Right"
         android:onClick="Right"
-        android:layout_alignTop="@+id/Up"
-        android:layout_alignStart="@+id/Up"
-        android:layout_marginStart="48dp" />
+        android:layout_above="@+id/Down"
+        android:layout_toEndOf="@+id/Up" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Down"
+        android:text="Backwards"
         android:id="@+id/Down"
-        android:onClick="Down"
+        android:onClick="Backwards"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
