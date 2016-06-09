@@ -1,5 +1,6 @@
 package com.magitech.aodonde.magitechmapping;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -145,6 +146,11 @@ public class Mapping extends AppCompatActivity {
             Y[i][0] = y;
             ydatacounter++;
         }
+    }
+
+    public void mainmenu(View view){
+        Intent intent = new Intent(this, Main.class);
+        startActivity(intent);
     }
 
 }
